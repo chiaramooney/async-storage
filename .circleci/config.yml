@@ -18,13 +18,13 @@ checkout step for each job: &addWorkspace
 default config for js: &js_defaults
   <<: *defaults
   docker:
-    - image: circleci/node:10
+    - image: circleci/node:12
 
 default config for macOS: &macos_defaults
   <<: *defaults
   resource_class: 'medium'
   macos:
-    xcode: '10.1.0'
+    xcode: '11.7.0'
 
 default config for android apk builds: &android_defaults
   <<: *defaults
@@ -143,9 +143,8 @@ jobs:
       - *addWorkspace
       - restore-cache: *cache_restore_brew
       - run:
-          name: Configure OSX Environment
+          name: Configure macOS Environment
           command: |
-            HOMEBREW_NO_AUTO_UPDATE=1 brew install node@8 >/dev/null
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap wix/brew >/dev/null
             HOMEBREW_NO_AUTO_UPDATE=1 brew install applesimutils >/dev/null
             touch .watchmanconfig
@@ -230,7 +229,6 @@ jobs:
             HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/cask >/dev/null
             HOMEBREW_NO_AUTO_UPDATE=1 brew cask install android-sdk >/dev/null
             HOMEBREW_NO_AUTO_UPDATE=1 brew cask install intel-haxm >/dev/null
-            HOMEBREW_NO_AUTO_UPDATE=1 brew install node@8 >/dev/null >/dev/null
       - save-cache: *cache_save_brew_android
 
       - run:
